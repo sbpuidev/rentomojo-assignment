@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
 import { UsersblogService } from 'src/app/services/usersblog.service';
 
 @Component({
@@ -9,9 +10,10 @@ import { UsersblogService } from 'src/app/services/usersblog.service';
 })
 export class PostsDetailsComponent implements OnInit {
   postDetails;
-  comments = [];
+  comments:Observable<any>;
   showLoadingIndicator = true;
-
+  toggleSpinner:boolean = false;
+  castCmnt = new Subject();
   constructor(private _route:ActivatedRoute,private _router:Router,private usersBlogService:UsersblogService) { 
     this.postDetails = this._route.snapshot.data['postDetails'];
     console.log('posts:', this.postDetails);
@@ -30,18 +32,14 @@ export class PostsDetailsComponent implements OnInit {
   ngOnInit(): void {
   }
   showComments(id){
-    this.usersBlogService.getCommentsById(id).subscribe(
-      (data:any)=>{
-        console.log('comments',data);
-        this.comments=data;
-      }
-    );
+    this.toggleSpinner = !this.toggleSpinner;
+    this.comments=this.usersBlogService.getCommentsById(id);
   }
   delPost(id,userId){
     this.usersBlogService.delPostById(id).subscribe(
       (data:any)=>{
         alert('Post deleted !');
-        this._router.navigate(['users-blog/posts/'+userId]);
+          this._router.navigate(['users-blog/posts/'+userId]);
       }
     );
   }

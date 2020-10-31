@@ -16,9 +16,14 @@
                     Show Comments
                 </button>
                 <div id="demo" class="collapse show">
-                    <ul>
-                        <li class="" *ngFor="let comments of comments">{{comments.body}}</li>
+                    <ul *ngIf="comments | async as comentz;else loading">
+                        <li class="" *ngFor="let cmnts of comentz">{{cmnts.body}}</li>
                     </ul>
+                    <ng-template #loading>
+                        <div *ngIf="toggleSpinner">
+                            <div class="spinner-border"></div>loading...
+                        </div>
+                    </ng-template>
                 </div>
             </td>
             <td>

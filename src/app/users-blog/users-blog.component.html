@@ -1,0 +1,19 @@
+<div class="container">
+    <h1>User Data:</h1>
+    <table class="table table-striped">
+        <thead>
+            <th>#</th>
+            <th>Name</th>
+            <th>Company</th>
+            <th>Go to Posts</th>
+        </thead>
+        <tbody *ngFor="let users of users">
+            <td>{{users.id}}</td>
+            <td>{{users.name}}</td>
+            <td>{{users.company['name']}}</td>
+            <td><a [routerLink]="['/users-blog/posts',users.id]">Posts</a></td>
+        </tbody>
+    </table>
+</div>
+<div *ngIf="showLoadingIndicator" class="spinner">Loading Users...</div>
+

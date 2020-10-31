@@ -1,0 +1,14 @@
+<div class="container">
+    <h1>Posts:</h1>
+    <table class="table table-striped">
+        <thead>
+            <th>#</th>
+            <th>Title</th>
+        </thead>
+        <tbody *ngFor="let posts of posts">
+            <td>{{posts.id}}</td>
+            <td><a [routerLink]="['/users-blog/posts-details',posts.id]">{{posts.title}}</a></td>
+        </tbody>
+    </table>
+</div>
+<div *ngIf="showLoadingIndicator" class="spinner">Loading Posts</div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { UsersblogService } from 'src/app/services/usersblog.service';
 
 @Component({
   selector: 'app-posts-details',
@@ -8,9 +9,10 @@ import { ActivatedRoute, NavigationCancel, NavigationEnd, NavigationError, Navig
 })
 export class PostsDetailsComponent implements OnInit {
   postDetails;
+  comments = [];
   showLoadingIndicator = true;
 
-  constructor(private _route:ActivatedRoute,private _router:Router) { 
+  constructor(private _route:ActivatedRoute,private _router:Router,private usersBlogService:UsersblogService) { 
     this.postDetails = this._route.snapshot.data['postDetails'];
     console.log('posts:', this.postDetails);
     this._router.events.subscribe((routerEvent) => {
@@ -27,7 +29,20 @@ export class PostsDetailsComponent implements OnInit {
   
   ngOnInit(): void {
   }
-  delPost(id){
-    alert(id);
+  showComments(id){
+    this.usersBlogService.getCommentsById(id).subscribe(
+      (data:any)=>{
+        console.log('comments',data);
+        this.comments=data;
+      }
+    );
+  }
+  delPost(id,userId){
+    this.usersBlogService.delPostById(id).subscribe(
+      (data:any)=>{
+        alert('Post deleted !');
+        this._router.navigate(['users-blog/posts/'+userId]);
+      }
+    );
   }
 }

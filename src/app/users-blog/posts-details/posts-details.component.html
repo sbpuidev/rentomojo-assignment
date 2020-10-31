@@ -10,8 +10,21 @@
         <tbody>
             <td>{{postDetails.title}}</td>
             <td>{{postDetails.body}}</td>
-            <td><a [routerLink]="['/users-blog/posts-details',postDetails.id]">{{postDetails.body}}</a></td>
-            <td><input type="button" class="btn btn-xs btn-danger" value="Delete" (click)="delPost(postDetails.id)"></td>
+            <td>
+                <button type="button" class="btn btn-primary" (click)="showComments(postDetails.id)"
+                    data-toggle="collapse" data-target="#demo">
+                    Show Comments
+                </button>
+                <div id="demo" class="collapse show">
+                    <ul>
+                        <li class="" *ngFor="let comments of comments">{{comments.body}}</li>
+                    </ul>
+                </div>
+            </td>
+            <td>
+                <input type="button" class="btn btn-xs btn-danger" value="Delete"
+                    (click)="delPost(postDetails.id,postDetails.userId)">
+            </td>
         </tbody>
     </table>
 </div>

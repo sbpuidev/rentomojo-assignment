@@ -18,4 +18,10 @@ export class UsersblogService {
   getPostById(id){
     return this.http.get(environment.API_URL + 'posts/' +id);
   }
+  getCommentsById(id){
+    return this.http.get(environment.API_URL + 'comments?postId=' +id);
+  }
+  delPostById(id){
+    return this.http.delete(environment.API_URL + 'posts/' +id);
+  }
 }

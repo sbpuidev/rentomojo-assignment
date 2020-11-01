@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,11 +9,21 @@ import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 export class AppComponent implements OnInit {
   title = 'rentomojo';
   currentUrl:any;
+  showLoadingIndicator = true;
+
   constructor(private router:Router){
-    router.events.subscribe((event) => {
-      console.log(event);
-      if (event instanceof NavigationEnd || event instanceof NavigationStart ) {
-        this.currentUrl = event.url;
+    router.events.subscribe((routerEvent) => {
+      console.log(routerEvent);
+      if (routerEvent instanceof NavigationEnd || routerEvent instanceof NavigationStart ) {
+        this.currentUrl = routerEvent.url;
+      }
+      if (routerEvent instanceof NavigationStart) {
+        this.showLoadingIndicator = true;
+      }
+      if (routerEvent instanceof NavigationEnd ||
+        routerEvent instanceof NavigationError ||
+        routerEvent instanceof NavigationCancel) {
+        this.showLoadingIndicator = false;
       }
     });
   }
